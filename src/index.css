@@ -50,6 +50,7 @@ header{
   justify-content: center;
   align-items: center;
   overflow-y: auto;
+  justify-content: flex-start;
 
 
 }
