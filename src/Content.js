@@ -1,6 +1,7 @@
 import { useState } from "react"
-import { FaTrashAlt } from "react-icons/fa"
 import ItemList from "./ItemList"
+import LineItem from "./LineItem"
+
 
     const Content = ({items,  handlecHECK, handleDelete}) =>{
     
@@ -17,8 +18,10 @@ import ItemList from "./ItemList"
       ):(
           <p style={{marginTop: '2rem'}}>your list is</p>
         )}
+        <LineItem />
       </main>
         
-    )}
+    )
+  }
 
 export default Content;

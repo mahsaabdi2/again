@@ -8,54 +8,67 @@ import { useState , useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { Routes, Route, Link} from "react-router-dom";
 import ItemList from "./ItemList";
+import LineItem from "./LineItem";
+import AddItem from "./AddItem";
+
 
 
 function App() {
   
-    const[items, setItem]=useState([
-      {
-        id: 1,
-        checked: true,
-        item: "one half"
-      },
-      {
-        id: 2,
-        checked: false,
-        item: "item2"
-      },
-      {
-        id: 3,
-        checked: false,
-        item: "item3"
-      },
-    ])
+    const[items, setItem]=useState(JSON.parse(localStorage.getItem('shoppinglist')));
+    const[newItem, setNewItem]=useState('');
+
+
+    const setAndSaveItems= (newItems) =>{
+      setItem(listItems)
+      localStorage.setItem('shoppinglist' , JSON.stringify(listItems));
+    }
+
+    const addItem = (item) =>{
+      const id= items.length ? items[items.length - 1].id + 1: 1;
+      const myNewItem ={id , checked: false, item };
+      const listItems =[...items, myNewItem];
+      setAndSaveItems(listItems)
+    }
+
+
     const handlecHECK =(id) =>{
       // console.log(`key: ${id}`)
       const listItems=items.map((item)=> item.id === id ? { ...item, checked: !item.checked } :item);
-      setItem(listItems)
-      localStorage.setItem('shoppinglist' , JSON.stringify(listItems));
+      setAndSaveItems(listItems)
     }
 
     const handleDelete= (id) =>{
       // console.log(id)
       const listItems=items.filter((item) => item.id !== id);
-      setItem(listItems)
-      localStorage.setItem('shoppinglist' , JSON.stringify(listItems));
+      setAndSaveItems(listItems)
     }
 
-
+    const handleSubmit= (e) =>{
+        e.preventDefault();
+        if (!newItem) return;
+        addItem(newItem);
+        setNewItem('');
+    }
   
   
 
   return (
     <div className="App">
     <Header title="Groceries List"/>
+    <AddItem 
+    newItem={newItem}
+    setNewItem={setNewItem}
+    handleSubmit={handleSubmit}
+    />
     <Content
       items={items}
       handlecHECK={handlecHECK}
       handleDelete={handleDelete}
      />
+     
     <Footer length={items.length} />
+    {/* <Counter /> */}
     </div>
   );
 
